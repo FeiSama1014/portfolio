@@ -73,6 +73,11 @@ export function Hero() {
           Scroll <ArrowDown className="h-3 w-3" />
         </a>
       </div>
+
+      {/* Photo caption · pinned to bottom-right of image area */}
+      <p className="absolute bottom-4 right-6 z-10 text-[10px] uppercase tracking-[0.3em] text-white/55 sm:right-10 lg:right-14">
+        2018 · Executive Producer · On a feature-film set
+      </p>
     </section>
   );
 }
