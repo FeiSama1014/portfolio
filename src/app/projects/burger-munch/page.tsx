@@ -12,7 +12,7 @@ const YT_ID = "B4P3dQSpa8c";
 const YT_WATCH_URL = `https://www.youtube.com/watch?v=${YT_ID}`;
 const YT_EMBED_URL = `https://www.youtube-nocookie.com/embed/${YT_ID}`;
 const MILANOTE_URL =
-  "https://app.milanote.com/1VnrMV1nHG0k9y/inm340saa-g10-preproduction?p=iF6USCRbbRG";
+  "https://app.milanote.com/1VnrMV1nHG0k9y?p=1Mo4JFRuvUj";
 
 export const metadata: Metadata = {
   title: "Burger_Munch · Unboxing Experience — Xiang Sean Yao",
