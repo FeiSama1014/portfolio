@@ -14,7 +14,7 @@ const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "";
 
 // Relative path for same-origin links (works in dev and prod).
-const PROTOTYPE_PATH = `${basePath}/projects/anfou/index.html`;
+const PROTOTYPE_PATH = `${basePath}/projects/anfou/prototype/index.html`;
 const CASE_STUDY_URL = `${basePath}/projects/anfou/case-study`;
 
 // Absolute URL for QR codes and anything that must resolve without context.
@@ -177,14 +177,14 @@ export default function AnFouOverviewPage() {
         >
           <div className="grid gap-4 sm:grid-cols-2">
             <MiniPersona
-              photo="/projects/anfou/assets/images/persona_yuki.jpg"
+              photo="/projects/anfou/prototype/assets/images/persona_yuki.jpg"
               name="Yuki Tanaka"
               tag="The Quiet Worrier"
               meta="23 · Grad student · Toronto"
               quote="I don't want to ignore her. I just wish 'I'm okay' didn't have to be a conversation."
             />
             <MiniPersona
-              photo="/projects/anfou/assets/images/persona_megumi.jpg"
+              photo="/projects/anfou/prototype/assets/images/persona_megumi.jpg"
               name="Megumi Tanaka"
               tag="The Selfless Worrier"
               meta="58 · Library assistant · Osaka"
@@ -260,7 +260,7 @@ export default function AnFouOverviewPage() {
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 key={f}
-                src={`${basePath}/projects/anfou/assets/images/Hi Fi/${f}`}
+                src={`${basePath}/projects/anfou/prototype/assets/images/Hi Fi/${f}`}
                 alt=""
                 loading="lazy"
                 className="w-full rounded-xl border border-foreground/10 bg-foreground/[0.03]"

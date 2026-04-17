@@ -15,7 +15,7 @@ import { cn } from "@/lib/cn";
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 // Same-origin relative path — the slideshow has no QR code so this is fine.
-const PROTOTYPE_URL = `${basePath}/projects/anfou/index.html`;
+const PROTOTYPE_URL = `${basePath}/projects/anfou/prototype/index.html`;
 
 function withBase(p: string) {
   return `${basePath}${p}`;
@@ -460,7 +460,7 @@ function SlidePersonaYuki() {
       location="Toronto, ON, Canada"
       role="Graduate Student, Computer Science"
       extra="Single · Japanese"
-      photo="/projects/anfou/assets/images/persona_yuki.jpg"
+      photo="/projects/anfou/prototype/assets/images/persona_yuki.jpg"
       bio="Yuki moved to Toronto from Osaka for her master's degree. She has always been on the quieter side — prefers small groups, texts over calls, and needs time alone to recharge. Moving abroad amplified this. Her mother sends a LINE message almost every morning. Yuki sees them hours later and knows she should reply, but the longer she waits the more it feels like she needs to say something more. So she puts it off again."
       goals={[
         "Let mom know she is safe without composing a reply",
@@ -497,7 +497,7 @@ function SlidePersonaMegumi() {
       location="Osaka, Japan"
       role="Part-time Library Assistant"
       extra="Divorced · Lives alone"
-      photo="/projects/anfou/assets/images/persona_megumi.jpg"
+      photo="/projects/anfou/prototype/assets/images/persona_megumi.jpg"
       bio="Megumi works three days a week at a local library in Osaka. The rest of her time is quiet. Since Yuki left for Canada, the apartment feels emptier than it used to. She sends Yuki a message every morning on LINE, just something small so Yuki knows she is thinking of her. Most days Yuki replies hours later, sometimes not until the next day. Megumi understands — she remembers being young and busy — but the waiting still makes her anxious."
       goals={[
         "Know Yuki is safe every day without asking directly",
@@ -788,7 +788,7 @@ function SlideLowFi() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={withBase(
-                `/projects/anfou/assets/images/Low Fi/${file}`
+                `/projects/anfou/prototype/assets/images/Low Fi/${file}`
               )}
               alt={label}
               className="w-full rounded-xl border border-foreground/10 bg-foreground/[0.03]"
@@ -936,7 +936,7 @@ function SlideHiFi() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={withBase(
-                `/projects/anfou/assets/images/Hi Fi/${file}`
+                `/projects/anfou/prototype/assets/images/Hi Fi/${file}`
               )}
               alt={label}
               className="w-full rounded-xl border border-foreground/10 bg-foreground/[0.03]"
