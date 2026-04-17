@@ -16,10 +16,10 @@ export default function HomePage() {
         <main className="min-w-0">
           <Hero />
           <Biography />
-          <Education />
+          <Projects />
           <Experience />
           <Skills />
-          <Projects />
+          <Education />
           <Contact />
         </main>
       </div>

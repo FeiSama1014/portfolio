@@ -41,10 +41,10 @@ export const siteConfig: SiteConfig = {
   ],
   nav: [
     { id: "about", label: "About" },
-    { id: "education", label: "Education" },
+    { id: "portfolio", label: "Portfolio" },
     { id: "experience", label: "Experience" },
     { id: "skills", label: "Skills" },
-    { id: "portfolio", label: "Portfolio" },
+    { id: "education", label: "Education" },
     { id: "contact", label: "Contact" },
   ],
 };
