@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>安否 AnFou — Prototype</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+</head>
+<body>
+  <!-- Phone Frame -->
+  <div class="phone-frame">
+    <div class="phone-notch"></div>
+    <div class="phone-screen">
+
+      <!-- ========== PAGE: Splash ========== -->
+      <div class="page active" id="page-splash">
+        <div class="splash-container">
+          <div class="splash-logo-wrap">
+            <div class="splash-icon">
+              <span class="material-icons-round">favorite</span>
+            </div>
+            <h1 class="splash-title" data-i18n="splash_title">AnFou</h1>
+            <p class="splash-subtitle" data-i18n="splash_subtitle">AnFou</p>
+          </div>
+          <p class="splash-tagline" data-i18n="splash_tagline">让牵挂，有回应</p>
+          <button class="btn btn-primary btn-lg splash-btn" onclick="navigateTo('page-login')" data-i18n="splash_start">开始使用</button>
+          <p class="splash-version">v1.0.0</p>
+        </div>
+      </div>
+
+      <!-- ========== PAGE: Login/Register ========== -->
+      <div class="page" id="page-login">
+        <div class="login-container">
+          <div class="login-header">
+            <div class="login-logo">
+              <span class="material-icons-round">favorite</span>
+            </div>
+            <h2 data-i18n="login_welcome">欢迎来到安否</h2>
+            <p class="login-desc" data-i18n="login_desc">用最简单的方式，让在乎你的人安心</p>
+          </div>
+
+          <!-- Tab Switch -->
+          <div class="login-tabs">
+            <button class="tab-btn active" onclick="switchLoginTab('login')" data-i18n="login_tab_login">登录</button>
+            <button class="tab-btn" onclick="switchLoginTab('register')" data-i18n="login_tab_register">注册</button>
+          </div>
+
+          <!-- Login Form -->
+          <div class="login-form" id="login-form">
+            <div class="input-group">
+              <span class="material-icons-round input-icon">phone</span>
+              <input type="tel" placeholder="手机号码" data-i18n-placeholder="login_phone">
+            </div>
+            <div class="input-group">
+              <span class="material-icons-round input-icon">lock</span>
+              <input type="password" placeholder="密码" data-i18n-placeholder="login_password">
+            </div>
+            <button class="btn btn-primary btn-lg" onclick="navigateTo('page-home')" data-i18n="login_btn">登录</button>
+            <p class="login-sms-hint">
+              <span class="material-icons-round">sms</span>
+              <span data-i18n="login_sms_hint">基于SMS通讯，无需网络也能报平安</span>
+            </p>
+          </div>
+
+          <!-- Register Form -->
+          <div class="login-form hidden" id="register-form">
+            <div class="input-group">
+              <span class="material-icons-round input-icon">person</span>
+              <input type="text" placeholder="你的昵称" data-i18n-placeholder="register_name">
+            </div>
+            <div class="input-group">
+              <span class="material-icons-round input-icon">phone</span>
+              <input type="tel" placeholder="手机号码" data-i18n-placeholder="login_phone">
+            </div>
+            <div class="input-group">
+              <span class="material-icons-round input-icon">lock</span>
+              <input type="password" placeholder="设置密码" data-i18n-placeholder="register_password">
+            </div>
+            <div class="input-group">
+              <span class="material-icons-round input-icon">group_add</span>
+              <input type="tel" placeholder="紧急联系人手机号" data-i18n-placeholder="register_emergency">
+            </div>
+            <button class="btn btn-primary btn-lg" onclick="navigateTo('page-home')" data-i18n="register_btn">注册</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== PAGE: Home ========== -->
+      <div class="page" id="page-home">
+        <div class="home-container">
+          <!-- Status Bar -->
+          <div class="home-header">
+            <div class="home-greeting">
+              <h2><span data-i18n="home_hi">你好，</span><span class="user-name">Yuki</span></h2>
+              <p class="home-date" id="home-date"></p>
+            </div>
+            <div class="home-header-actions">
+              <button class="header-icon-btn" id="a11y-btn-home" onclick="toggleLargeFont()" title="Large Font / 大号字体">
+                <span class="material-icons-round">text_fields</span>
+              </button>
+              <button class="header-icon-btn" onclick="navigateTo('page-settings')">
+                <span class="material-icons-round">person</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Check-in Button -->
+          <div class="checkin-section">
+            <div class="checkin-ring" id="checkin-ring">
+              <button class="checkin-btn" id="checkin-btn" onclick="doCheckin()">
+                <span class="checkin-icon material-icons-round">touch_app</span>
+                <span class="checkin-text" data-i18n="home_checkin">点击报平安</span>
+              </button>
+            </div>
+            <p class="checkin-status" id="checkin-status" data-i18n="home_checkin_hint">今天还没有报平安哦</p>
+          </div>
+
+          <!-- Mood Selection (appears after check-in) -->
+          <div class="mood-section hidden" id="mood-section">
+            <p class="mood-title" data-i18n="home_mood">今天心情如何？</p>
+            <div class="mood-options">
+              <button class="mood-btn" onclick="selectMood(this, '😊')">😊</button>
+              <button class="mood-btn" onclick="selectMood(this, '😌')">😌</button>
+              <button class="mood-btn" onclick="selectMood(this, '😴')">😴</button>
+              <button class="mood-btn" onclick="selectMood(this, '😢')">😢</button>
+              <button class="mood-btn" onclick="selectMood(this, '💪')">💪</button>
+            </div>
+          </div>
+
+          <!-- Contacts Quick View -->
+          <div class="home-contacts-section">
+            <div class="section-header">
+              <h3 data-i18n="home_caring">我关心的人</h3>
+              <button class="text-btn" onclick="navigateTo('page-contacts')" data-i18n="home_view_all">查看全部</button>
+            </div>
+            <div class="home-notify-toggle">
+              <div class="home-notify-info">
+                <span class="material-icons-round">notifications_active</span>
+                <span data-i18n="home_notify">Status update notifications</span>
+              </div>
+              <label class="toggle toggle-sm">
+                <input type="checkbox" checked onchange="toggleNotify(this)">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <div class="contact-cards">
+              <div class="contact-card safe" onclick="navigateTo('page-contact-detail')">
+                <div class="contact-avatar">妈</div>
+                <div class="contact-info">
+                  <span class="contact-name" data-i18n="contact_mom">妈妈</span>
+                  <span class="contact-status-text"><span class="status-dot safe"></span><span data-i18n="status_safe_time">2小时前已报平安</span></span>
+                </div>
+                <span class="material-icons-round contact-arrow">chevron_right</span>
+              </div>
+              <div class="contact-card safe" onclick="navigateTo('page-detail-dad')">
+                <div class="contact-avatar">爸</div>
+                <div class="contact-info">
+                  <span class="contact-name" data-i18n="contact_dad">爸爸</span>
+                  <span class="contact-status-text"><span class="status-dot safe"></span><span data-i18n="status_safe_time2">5小时前已报平安</span></span>
+                </div>
+                <span class="material-icons-round contact-arrow">chevron_right</span>
+              </div>
+              <div class="contact-card alert" onclick="navigateTo('page-detail-grandma')">
+                <div class="contact-avatar alert">奶</div>
+                <div class="contact-info">
+                  <span class="contact-name" data-i18n="contact_grandma">奶奶</span>
+                  <span class="contact-status-text"><span class="status-dot alert"></span><span data-i18n="status_3days">3 days without check-in</span></span>
+                </div>
+                <button class="call-nudge-btn" onclick="event.stopPropagation(); showToast(currentLang==='zh'?'正在拨打奶奶...':'Calling Grandma...')">
+                  <span class="material-icons-round">call</span>
+                  <span data-i18n="nudge_call">Call?</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+          <button class="nav-item active" onclick="navigateTo('page-home')">
+            <span class="material-icons-round">home</span>
+            <span data-i18n="nav_home">首页</span>
+          </button>
+          <button class="nav-item" onclick="navigateTo('page-alarm')">
+            <span class="material-icons-round">alarm</span>
+            <span data-i18n="nav_alarm">闹钟</span>
+          </button>
+          <button class="nav-item" onclick="navigateTo('page-contacts')">
+            <span class="material-icons-round">people</span>
+            <span data-i18n="nav_contacts">联系人</span>
+          </button>
+          <button class="nav-item" onclick="navigateTo('page-history')">
+            <span class="material-icons-round">calendar_month</span>
+            <span data-i18n="nav_history">记录</span>
+          </button>
+        </nav>
+      </div>
+
+      <!-- ========== PAGE: Alarm ========== -->
+      <div class="page" id="page-alarm">
+        <div class="alarm-container">
+          <div class="page-top-bar">
+            <h2 data-i18n="alarm_title">平安闹钟</h2>
+            <p class="page-top-desc" data-i18n="alarm_desc">关闭闹钟的同时，自动为你报平安</p>
+          </div>
+
+          <!-- Main Alarm -->
+          <div class="alarm-card alarm-main">
+            <div class="alarm-card-header">
+              <span class="alarm-label" data-i18n="alarm_morning">早安闹钟</span>
+              <label class="toggle">
+                <input type="checkbox" checked onchange="toggleAlarm(this)">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <div class="alarm-time">
+              <span class="alarm-hour">07</span>
+              <span class="alarm-colon">:</span>
+              <span class="alarm-min">30</span>
+            </div>
+            <div class="alarm-meta">
+              <span class="alarm-repeat" data-i18n="alarm_everyday">每天</span>
+              <span class="alarm-divider">·</span>
+              <span class="alarm-action">
+                <span class="material-icons-round">sms</span>
+                <span data-i18n="alarm_auto_checkin">关闭时自动报平安</span>
+              </span>
+            </div>
+          </div>
+
+          <!-- Secondary Alarm -->
+          <div class="alarm-card">
+            <div class="alarm-card-header">
+              <span class="alarm-label" data-i18n="alarm_nap">午休闹钟</span>
+              <label class="toggle">
+                <input type="checkbox">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <div class="alarm-time">
+              <span class="alarm-hour">13</span>
+              <span class="alarm-colon">:</span>
+              <span class="alarm-min">00</span>
+            </div>
+            <div class="alarm-meta">
+              <span class="alarm-repeat" data-i18n="alarm_weekdays">工作日</span>
+              <span class="alarm-divider">·</span>
+              <span class="alarm-action disabled">
+                <span class="material-icons-round">sms</span>
+                <span data-i18n="alarm_no_checkin">不报平安</span>
+              </span>
+            </div>
+          </div>
+
+          <!-- Alarm Firing Simulation -->
+          <div class="alarm-demo-section">
+            <button class="btn btn-outline" onclick="simulateAlarm()" data-i18n="alarm_demo">模拟闹钟响铃</button>
+          </div>
+        </div>
+
+        <!-- Alarm Overlay -->
+        <div class="alarm-overlay hidden" id="alarm-overlay">
+          <div class="alarm-firing">
+            <div class="alarm-firing-ring">
+              <span class="material-icons-round alarm-firing-icon">alarm</span>
+            </div>
+            <p class="alarm-firing-time">07:30</p>
+            <p class="alarm-firing-label" data-i18n="alarm_morning">早安闹钟</p>
+            <button class="btn btn-primary btn-lg alarm-dismiss-btn" onclick="dismissAlarm()">
+              <span class="material-icons-round">touch_app</span>
+              <span data-i18n="alarm_dismiss">滑动关闭并报平安</span>
+            </button>
+            <p class="alarm-firing-hint" data-i18n="alarm_dismiss_hint">关闭闹钟后将自动通知你的亲人</p>
+          </div>
+        </div>
+
+        <nav class="bottom-nav">
+          <button class="nav-item" onclick="navigateTo('page-home')">
+            <span class="material-icons-round">home</span>
+            <span data-i18n="nav_home">首页</span>
+          </button>
+          <button class="nav-item active" onclick="navigateTo('page-alarm')">
+            <span class="material-icons-round">alarm</span>
+            <span data-i18n="nav_alarm">闹钟</span>
+          </button>
+          <button class="nav-item" onclick="navigateTo('page-contacts')">
+            <span class="material-icons-round">people</span>
+            <span data-i18n="nav_contacts">联系人</span>
+          </button>
+          <button class="nav-item" onclick="navigateTo('page-history')">
+            <span class="material-icons-round">calendar_month</span>
+            <span data-i18n="nav_history">记录</span>
+          </button>
+        </nav>
+      </div>
+
+      <!-- ========== PAGE: Contacts ========== -->
+      <div class="page" id="page-contacts">
+        <div class="contacts-container">
+          <div class="page-top-bar">
+            <h2 data-i18n="contacts_title">联系人</h2>
+          </div>
+
+          <!-- Tabs -->
+          <div class="contacts-tabs">
+            <button class="tab-btn active" onclick="switchContactsTab('caring')" data-i18n="contacts_caring">我关心的</button>
+            <button class="tab-btn" onclick="switchContactsTab('cared')" data-i18n="contacts_cared">关心我的</button>
+          </div>
+
+          <!-- Caring List -->
+          <div class="contacts-list" id="contacts-caring">
+            <div class="contact-row" onclick="navigateTo('page-contact-detail')">
+              <div class="contact-avatar-sm">妈</div>
+              <div class="contact-row-info">
+                <span class="contact-row-name" data-i18n="contact_mom">妈妈</span>
+                <span class="contact-row-phone">+81 90****1234</span>
+              </div>
+              <div class="contact-row-status safe">
+                <span class="status-dot safe"></span>
+                <span data-i18n="status_safe">平安</span>
+              </div>
+            </div>
+            <div class="contact-row" onclick="navigateTo('page-detail-dad')">
+              <div class="contact-avatar-sm">爸</div>
+              <div class="contact-row-info">
+                <span class="contact-row-name" data-i18n="contact_dad">爸爸</span>
+                <span class="contact-row-phone">+81 80****5678</span>
+              </div>
+              <div class="contact-row-status safe">
+                <span class="status-dot safe"></span>
+                <span data-i18n="status_safe">平安</span>
+              </div>
+            </div>
+            <div class="contact-row" onclick="navigateTo('page-detail-grandma')">
+              <div class="contact-avatar-sm">奶</div>
+              <div class="contact-row-info">
+                <span class="contact-row-name" data-i18n="contact_grandma">奶奶</span>
+                <span class="contact-row-phone">+81 70****9012</span>
+              </div>
+              <div class="contact-row-status alert">
+                <span class="status-dot alert"></span>
+                <span data-i18n="status_3days_short">3 days</span>
+              </div>
+            </div>
+            <div class="contact-row">
+              <div class="contact-avatar-sm">E</div>
+              <div class="contact-row-info">
+                <span class="contact-row-name" data-i18n="contact_friend">Emily</span>
+                <span class="contact-row-phone">+1 647****3456</span>
+              </div>
+              <div class="contact-row-status safe">
+                <span class="status-dot safe"></span>
+                <span data-i18n="status_safe">平安</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cared List -->
+          <div class="contacts-list hidden" id="contacts-cared">
+            <div class="contact-row">
+              <div class="contact-avatar-sm">妈</div>
+              <div class="contact-row-info">
+                <span class="contact-row-name" data-i18n="contact_mom">妈妈</span>
+                <span class="contact-row-phone">+81 90****1234</span>
+              </div>
+              <div class="contact-row-right">
+                <span class="material-icons-round">visibility</span>
+              </div>
+            </div>
+            <div class="contact-row">
+              <div class="contact-avatar-sm">K</div>
+              <div class="contact-row-info">
+                <span class="contact-row-name" data-i18n="contact_kaori">Kaori</span>
+                <span class="contact-row-phone">+81 90****7890</span>
+              </div>
+              <div class="contact-row-right">
+                <span class="material-icons-round">visibility</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Add Contact -->
+          <button class="fab" onclick="navigateTo('page-add-contact')">
+            <span class="material-icons-round">person_add</span>
+          </button>
+        </div>
+
+        <nav class="bottom-nav">
+          <button class="nav-item" onclick="navigateTo('page-home')">
+            <span class="material-icons-round">home</span>
+            <span data-i18n="nav_home">首页</span>
+          </button>
+          <button class="nav-item" onclick="navigateTo('page-alarm')">
+            <span class="material-icons-round">alarm</span>
+            <span data-i18n="nav_alarm">闹钟</span>
+          </button>
+          <button class="nav-item active" onclick="navigateTo('page-contacts')">
+            <span class="material-icons-round">people</span>
+            <span data-i18n="nav_contacts">联系人</span>
+          </button>
+          <button class="nav-item" onclick="navigateTo('page-history')">
+            <span class="material-icons-round">calendar_month</span>
+            <span data-i18n="nav_history">记录</span>
+          </button>
+        </nav>
+      </div>
+
+      <!-- ========== PAGE: Add Contact ========== -->
+      <div class="page" id="page-add-contact">
+        <div class="add-contact-container">
+          <div class="detail-top-bar">
+            <button class="back-btn" onclick="navigateTo('page-contacts')">
+              <span class="material-icons-round">arrow_back</span>
+            </button>
+            <h3 data-i18n="add_contact_title">Add Contact</h3>
+            <div style="width:40px"></div>
+          </div>
+
+          <!-- Tabs -->
+          <div class="contacts-tabs">
+            <button class="tab-btn active" onclick="switchAddContactTab('manual')" data-i18n="add_tab_manual">Manual</button>
+            <button class="tab-btn" onclick="switchAddContactTab('phonebook')" data-i18n="add_tab_phonebook">Phone Book</button>
+          </div>
+
+          <!-- Manual Add -->
+          <div class="add-contact-form" id="add-manual">
+            <p class="add-contact-desc" data-i18n="add_manual_desc">Enter their phone number to send a connection request</p>
+
+            <label class="input-label" data-i18n="add_label_phone">Phone Number</label>
+            <div class="phone-input-row">
+              <div class="country-code-select" onclick="toggleCountryDropdown()">
+                <span id="selected-country-flag">🇯🇵</span>
+                <span id="selected-country-code">+81</span>
+                <span class="material-icons-round">expand_more</span>
+              </div>
+              <input type="tel" class="phone-number-input" placeholder="138 0000 0000" data-i18n-placeholder="add_phone_placeholder">
+            </div>
+
+            <!-- Country Code Dropdown -->
+            <div class="country-dropdown hidden" id="country-dropdown">
+              <div class="country-option" onclick="selectCountry('🇨🇳', '+86', 'China')">
+                <span>🇨🇳</span><span>China</span><span class="country-code-val">+86</span>
+              </div>
+              <div class="country-option" onclick="selectCountry('🇺🇸', '+1', 'United States')">
+                <span>🇺🇸</span><span>United States</span><span class="country-code-val">+1</span>
+              </div>
+              <div class="country-option" onclick="selectCountry('🇬🇧', '+44', 'United Kingdom')">
+                <span>🇬🇧</span><span>United Kingdom</span><span class="country-code-val">+44</span>
+              </div>
+              <div class="country-option" onclick="selectCountry('🇨🇦', '+1', 'Canada')">
+                <span>🇨🇦</span><span>Canada</span><span class="country-code-val">+1</span>
+              </div>
+              <div class="country-option" onclick="selectCountry('🇯🇵', '+81', 'Japan')">
+                <span>🇯🇵</span><span>Japan</span><span class="country-code-val">+81</span>
+              </div>
+              <div class="country-option" onclick="selectCountry('🇰🇷', '+82', 'South Korea')">
+                <span>🇰🇷</span><span>South Korea</span><span class="country-code-val">+82</span>
+              </div>
+              <div class="country-option" onclick="selectCountry('🇦🇺', '+61', 'Australia')">
+                <span>🇦🇺</span><span>Australia</span><span class="country-code-val">+61</span>
+              </div>
+              <div class="country-option" onclick="selectCountry('🇫🇷', '+33', 'France')">
+                <span>🇫🇷</span><span>France</span><span class="country-code-val">+33</span>
+              </div>
+              <div class="country-option" onclick="selectCountry('🇩🇪', '+49', 'Germany')">
+                <span>🇩🇪</span><span>Germany</span><span class="country-code-val">+49</span>
+              </div>
+            </div>
+
+            <label class="input-label" data-i18n="add_label_note">Note (optional)</label>
+            <div class="input-group">
+              <span class="material-icons-round input-icon">edit</span>
+              <input type="text" placeholder="e.g. Mom, Roommate..." data-i18n-placeholder="add_note_placeholder">
+            </div>
+
+            <button class="btn btn-primary btn-lg" onclick="sendConnectRequest()" data-i18n="add_btn_request">Request Connect</button>
+
+            <div class="add-contact-hint">
+              <span class="material-icons-round">info_outline</span>
+              <span data-i18n="add_request_hint">A connection request will be sent via SMS. The contact needs to install AnFou to accept.</span>
+            </div>
+          </div>
+
+          <!-- Phone Book -->
+          <div class="add-contact-form hidden" id="add-phonebook">
+            <p class="add-contact-desc" data-i18n="add_phonebook_desc">Import contacts from your phone book</p>
+
+            <!-- Search -->
+            <div class="input-group">
+              <span class="material-icons-round input-icon">search</span>
+              <input type="text" placeholder="Search contacts..." data-i18n-placeholder="add_search_placeholder">
+            </div>
+
+            <!-- Phonebook List -->
+            <div class="phonebook-list">
+              <div class="phonebook-item">
+                <div class="contact-avatar-sm">A</div>
+                <div class="contact-row-info">
+                  <span class="contact-row-name">Aiko Sato</span>
+                  <span class="contact-row-phone">+81 90****2233</span>
+                </div>
+                <button class="invite-btn" onclick="inviteContact(this)" data-i18n="add_btn_invite">Invite</button>
+              </div>
+              <div class="phonebook-item">
+                <div class="contact-avatar-sm">E</div>
+                <div class="contact-row-info">
+                  <span class="contact-row-name">Emily Carter</span>
+                  <span class="contact-row-phone">+1 647****4455</span>
+                </div>
+                <button class="invite-btn connected" disabled data-i18n="add_btn_connected">Connected</button>
+              </div>
+              <div class="phonebook-item">
+                <div class="contact-avatar-sm">H</div>
+                <div class="contact-row-info">
+                  <span class="contact-row-name">Haruto Yamada</span>
+                  <span class="contact-row-phone">+81 80****6677</span>
+                </div>
+                <button class="invite-btn invited" disabled data-i18n="add_btn_invited">Invited</button>
+              </div>
+              <div class="phonebook-item">
+                <div class="contact-avatar-sm">K</div>
+                <div class="contact-row-info">
+                  <span class="contact-row-name">Kaori Tanaka</span>
+                  <span class="contact-row-phone">+81 90****7890</span>
+                </div>
+                <button class="invite-btn connected" disabled data-i18n="add_btn_connected">Connected</button>
+              </div>
+              <div class="phonebook-item">
+                <div class="contact-avatar-sm">L</div>
+                <div class="contact-row-info">
+                  <span class="contact-row-name">Liam Chen</span>
+                  <span class="contact-row-phone">+1 416****0011</span>
+                </div>
+                <button class="invite-btn" onclick="inviteContact(this)" data-i18n="add_btn_invite">Invite</button>
+              </div>
+              <div class="phonebook-item">
+                <div class="contact-avatar-sm">M</div>
+                <div class="contact-row-info">
+                  <span class="contact-row-name">Megumi Tanaka</span>
+                  <span class="contact-row-phone">+81 90****1234</span>
+                </div>
+                <button class="invite-btn connected" disabled data-i18n="add_btn_connected">Connected</button>
+              </div>
+              <div class="phonebook-item">
+                <div class="contact-avatar-sm">S</div>
+                <div class="contact-row-info">
+                  <span class="contact-row-name">Sarah Park</span>
+                  <span class="contact-row-phone">+82 10****5566</span>
+                </div>
+                <button class="invite-btn" onclick="inviteContact(this)" data-i18n="add_btn_invite">Invite</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== PAGE: Contact Detail ========== -->
+      <div class="page" id="page-contact-detail">
+        <div class="detail-container">
+          <div class="detail-top-bar">
+            <button class="back-btn" onclick="navigateTo('page-contacts')">
+              <span class="material-icons-round">arrow_back</span>
+            </button>
+            <h3 data-i18n="contact_mom">妈妈</h3>
+            <div style="width:40px"></div>
+          </div>
+
+          <div class="detail-profile">
+            <div class="detail-avatar">妈</div>
+            <h2 class="detail-name" data-i18n="contact_mom">妈妈</h2>
+            <p class="detail-phone">+81 90****1234</p>
+            <div class="detail-status-badge safe">
+              <span class="material-icons-round">check_circle</span>
+              <span data-i18n="detail_safe">今日已报平安</span>
+            </div>
+          </div>
+
+          <!-- Recent Activity -->
+          <div class="detail-section">
+            <h4 data-i18n="detail_recent">近期动态</h4>
+            <div class="detail-timeline">
+              <div class="timeline-item">
+                <div class="timeline-dot safe"></div>
+                <div class="timeline-content">
+                  <span class="timeline-action" data-i18n="detail_checked_in">已报平安</span>
+                  <span class="timeline-mood">😊</span>
+                  <span class="timeline-time" data-i18n="detail_time_today">今天 07:32</span>
+                </div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-dot safe"></div>
+                <div class="timeline-content">
+                  <span class="timeline-action" data-i18n="detail_checked_in">已报平安</span>
+                  <span class="timeline-mood">😌</span>
+                  <span class="timeline-time" data-i18n="detail_time_yesterday">昨天 08:15</span>
+                </div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-dot safe"></div>
+                <div class="timeline-content">
+                  <span class="timeline-action" data-i18n="detail_checked_in">已报平安</span>
+                  <span class="timeline-mood">💪</span>
+                  <span class="timeline-time" data-i18n="detail_time_2days">前天 07:45</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Streak -->
+          <div class="detail-section">
+            <div class="streak-card">
+              <span class="material-icons-round streak-icon">local_fire_department</span>
+              <div class="streak-info">
+                <span class="streak-count">15</span>
+                <span class="streak-label" data-i18n="detail_streak">连续报平安天数</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Actions -->
+          <div class="detail-section">
+            <h4 data-i18n="detail_actions">快捷操作</h4>
+            <div class="detail-actions">
+              <button class="action-btn" onclick="showToast(currentLang==='zh'?'发送SMS提醒':'SMS reminder sent')">
+                <span class="material-icons-round">sms</span>
+                <span data-i18n="detail_remind">发送提醒</span>
+              </button>
+              <button class="action-btn" onclick="showToast(currentLang==='zh'?'拨打电话':'Calling...')">
+                <span class="material-icons-round">call</span>
+                <span data-i18n="detail_call">拨打电话</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== PAGE: Detail - Dad ========== -->
+      <div class="page" id="page-detail-dad">
+        <div class="detail-container">
+          <div class="detail-top-bar">
+            <button class="back-btn" onclick="navigateTo('page-contacts')">
+              <span class="material-icons-round">arrow_back</span>
+            </button>
+            <h3 data-i18n="contact_dad">Dad</h3>
+            <div style="width:40px"></div>
+          </div>
+
+          <div class="detail-profile">
+            <div class="detail-avatar">爸</div>
+            <h2 class="detail-name" data-i18n="contact_dad">Dad</h2>
+            <p class="detail-phone">+81 80****5678</p>
+            <div class="detail-status-badge safe">
+              <span class="material-icons-round">check_circle</span>
+              <span data-i18n="detail_safe">Checked in today</span>
+            </div>
+          </div>
+
+          <div class="detail-section">
+            <h4 data-i18n="detail_recent">Recent Activity</h4>
+            <div class="detail-timeline">
+              <div class="timeline-item">
+                <div class="timeline-dot safe"></div>
+                <div class="timeline-content">
+                  <span class="timeline-action" data-i18n="detail_checked_in">Checked in</span>
+                  <span class="timeline-mood">😌</span>
+                  <span class="timeline-time" data-i18n="dad_time_today">Today 06:50</span>
+                </div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-dot safe"></div>
+                <div class="timeline-content">
+                  <span class="timeline-action" data-i18n="detail_checked_in">Checked in</span>
+                  <span class="timeline-mood">😊</span>
+                  <span class="timeline-time" data-i18n="detail_time_yesterday">Yesterday 08:15</span>
+                </div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-dot safe"></div>
+                <div class="timeline-content">
+                  <span class="timeline-action" data-i18n="detail_checked_in">Checked in</span>
+                  <span class="timeline-mood">😊</span>
+                  <span class="timeline-time" data-i18n="detail_time_2days">2 days ago 07:45</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="detail-section">
+            <div class="streak-card">
+              <span class="material-icons-round streak-icon">local_fire_department</span>
+              <div class="streak-info">
+                <span class="streak-count">8</span>
+                <span class="streak-label" data-i18n="detail_streak">consecutive check-in days</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="detail-section">
+            <h4 data-i18n="detail_actions">Quick Actions</h4>
+            <div class="detail-actions">
+              <button class="action-btn" onclick="showToast(currentLang==='zh'?'发送SMS提醒':'SMS reminder sent')">
+                <span class="material-icons-round">sms</span>
+                <span data-i18n="detail_remind">Send Reminder</span>
+              </button>
+              <button class="action-btn" onclick="showToast(currentLang==='zh'?'拨打电话':'Calling...')">
+                <span class="material-icons-round">call</span>
+                <span data-i18n="detail_call">Make a Call</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== PAGE: Detail - Grandma (Alert State) ========== -->
+      <div class="page" id="page-detail-grandma">
+        <div class="detail-container">
+          <div class="detail-top-bar">
+            <button class="back-btn" onclick="navigateTo('page-contacts')">
+              <span class="material-icons-round">arrow_back</span>
+            </button>
+            <h3 data-i18n="contact_grandma">Grandma</h3>
+            <div style="width:40px"></div>
+          </div>
+
+          <div class="detail-profile">
+            <div class="detail-avatar alert-avatar">奶</div>
+            <h2 class="detail-name" data-i18n="contact_grandma">Grandma</h2>
+            <p class="detail-phone">+81 70****9012</p>
+            <div class="detail-status-badge alert-badge">
+              <span class="material-icons-round">warning</span>
+              <span data-i18n="status_3days">3 days without check-in</span>
+            </div>
+          </div>
+
+          <!-- Alert Banner -->
+          <div class="alert-banner">
+            <div class="alert-banner-icon">
+              <span class="material-icons-round">error_outline</span>
+            </div>
+            <div class="alert-banner-text">
+              <span class="alert-banner-title" data-i18n="grandma_alert_title">Haven't heard from Grandma</span>
+              <span class="alert-banner-desc" data-i18n="grandma_alert_desc">Her last check-in was 3 days ago. Maybe give her a call?</span>
+            </div>
+          </div>
+
+          <!-- Call to Action -->
+          <div class="detail-section">
+            <div class="grandma-cta">
+              <button class="btn btn-primary btn-lg grandma-call-btn" onclick="showToast(currentLang==='zh'?'正在拨打奶奶...':'Calling Grandma...')">
+                <span class="material-icons-round">call</span>
+                <span data-i18n="grandma_call_now">Call Grandma Now</span>
+              </button>
+              <button class="btn btn-outline grandma-sms-btn" onclick="showToast(currentLang==='zh'?'已发送SMS提醒':'SMS reminder sent to Grandma')">
+                <span class="material-icons-round">sms</span>
+                <span data-i18n="grandma_send_remind">Send a Gentle Reminder</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Timeline with gap -->
+          <div class="detail-section">
+            <h4 data-i18n="detail_recent">Recent Activity</h4>
+            <div class="detail-timeline">
+              <div class="timeline-item">
+                <div class="timeline-dot missed"></div>
+                <div class="timeline-content">
+                  <span class="timeline-action timeline-missed" data-i18n="grandma_missed">Missed</span>
+                  <span class="timeline-time" data-i18n="grandma_time_today">Today</span>
+                </div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-dot missed"></div>
+                <div class="timeline-content">
+                  <span class="timeline-action timeline-missed" data-i18n="grandma_missed">Missed</span>
+                  <span class="timeline-time" data-i18n="grandma_time_yesterday">Yesterday</span>
+                </div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-dot missed"></div>
+                <div class="timeline-content">
+                  <span class="timeline-action timeline-missed" data-i18n="grandma_missed">Missed</span>
+                  <span class="timeline-time" data-i18n="grandma_time_2days">2 days ago</span>
+                </div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-dot safe"></div>
+                <div class="timeline-content">
+                  <span class="timeline-action" data-i18n="detail_checked_in">Checked in</span>
+                  <span class="timeline-mood">😊</span>
+                  <span class="timeline-time" data-i18n="grandma_time_3days">3 days ago 08:20</span>
+                </div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-dot safe"></div>
+                <div class="timeline-content">
+                  <span class="timeline-action" data-i18n="detail_checked_in">Checked in</span>
+                  <span class="timeline-mood">😌</span>
+                  <span class="timeline-time" data-i18n="grandma_time_4days">4 days ago 09:10</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Streak broken -->
+          <div class="detail-section">
+            <div class="streak-card streak-broken">
+              <span class="material-icons-round streak-icon">heart_broken</span>
+              <div class="streak-info">
+                <span class="streak-count">0</span>
+                <span class="streak-label" data-i18n="grandma_streak_broken">Streak broken · was 12 days</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== PAGE: History ========== -->
+      <div class="page" id="page-history">
+        <div class="history-container">
+          <div class="page-top-bar">
+            <h2 data-i18n="history_title">平安记录</h2>
+          </div>
+
+          <!-- Calendar Mini -->
+          <div class="calendar-section">
+            <div class="calendar-header">
+              <button class="calendar-nav" onclick="changeMonth(-1)">
+                <span class="material-icons-round">chevron_left</span>
+              </button>
+              <span class="calendar-month" id="calendar-month">2026年4月</span>
+              <button class="calendar-nav" onclick="changeMonth(1)">
+                <span class="material-icons-round">chevron_right</span>
+              </button>
+            </div>
+            <div class="calendar-weekdays">
+              <span data-i18n="cal_mon">一</span>
+              <span data-i18n="cal_tue">二</span>
+              <span data-i18n="cal_wed">三</span>
+              <span data-i18n="cal_thu">四</span>
+              <span data-i18n="cal_fri">五</span>
+              <span data-i18n="cal_sat">六</span>
+              <span data-i18n="cal_sun">日</span>
+            </div>
+            <div class="calendar-grid" id="calendar-grid">
+              <!-- Generated by JS -->
+            </div>
+          </div>
+
+          <!-- Stats -->
+          <div class="history-stats">
+            <div class="stat-card">
+              <span class="stat-number">15</span>
+              <span class="stat-label" data-i18n="history_streak">连续天数</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-number">92%</span>
+              <span class="stat-label" data-i18n="history_rate">本月签到率</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-number">😊</span>
+              <span class="stat-label" data-i18n="history_mood">最常心情</span>
+            </div>
+          </div>
+
+          <!-- Recent Log -->
+          <div class="history-log">
+            <h4 data-i18n="history_log">签到日志</h4>
+            <div class="log-item">
+              <div class="log-date">4/14</div>
+              <div class="log-info">
+                <span data-i18n="log_alarm_checkin">闹钟报平安</span>
+                <span class="log-time">07:30</span>
+              </div>
+              <span class="log-mood">😊</span>
+            </div>
+            <div class="log-item">
+              <div class="log-date">4/13</div>
+              <div class="log-info">
+                <span data-i18n="log_manual_checkin">手动报平安</span>
+                <span class="log-time">09:12</span>
+              </div>
+              <span class="log-mood">😌</span>
+            </div>
+            <div class="log-item">
+              <div class="log-date">4/12</div>
+              <div class="log-info">
+                <span data-i18n="log_alarm_checkin">闹钟报平安</span>
+                <span class="log-time">07:31</span>
+              </div>
+              <span class="log-mood">💪</span>
+            </div>
+            <div class="log-item">
+              <div class="log-date">4/11</div>
+              <div class="log-info">
+                <span data-i18n="log_alarm_checkin">闹钟报平安</span>
+                <span class="log-time">07:30</span>
+              </div>
+              <span class="log-mood">😊</span>
+            </div>
+          </div>
+        </div>
+
+        <nav class="bottom-nav">
+          <button class="nav-item" onclick="navigateTo('page-home')">
+            <span class="material-icons-round">home</span>
+            <span data-i18n="nav_home">首页</span>
+          </button>
+          <button class="nav-item" onclick="navigateTo('page-alarm')">
+            <span class="material-icons-round">alarm</span>
+            <span data-i18n="nav_alarm">闹钟</span>
+          </button>
+          <button class="nav-item" onclick="navigateTo('page-contacts')">
+            <span class="material-icons-round">people</span>
+            <span data-i18n="nav_contacts">联系人</span>
+          </button>
+          <button class="nav-item active" onclick="navigateTo('page-history')">
+            <span class="material-icons-round">calendar_month</span>
+            <span data-i18n="nav_history">记录</span>
+          </button>
+        </nav>
+      </div>
+
+      <!-- ========== PAGE: Settings ========== -->
+      <div class="page" id="page-settings">
+        <div class="settings-container">
+          <div class="detail-top-bar">
+            <button class="back-btn" onclick="navigateTo('page-home')">
+              <span class="material-icons-round">arrow_back</span>
+            </button>
+            <h3 data-i18n="settings_title">设置</h3>
+            <div style="width:40px"></div>
+          </div>
+
+          <!-- Profile Section -->
+          <div class="settings-profile">
+            <div class="settings-avatar">
+              <span class="material-icons-round">person</span>
+            </div>
+            <div class="settings-user-info">
+              <span class="settings-user-name">Yuki</span>
+              <span class="settings-user-phone">+1 647****8823</span>
+            </div>
+          </div>
+
+          <!-- Language -->
+          <div class="settings-group">
+            <h4 data-i18n="settings_general">通用设置</h4>
+            <div class="settings-item" onclick="showLanguageModal()">
+              <span class="material-icons-round">language</span>
+              <div class="settings-item-info">
+                <span data-i18n="settings_language">语言</span>
+                <span class="settings-item-value" id="current-lang-label">English</span>
+              </div>
+              <span class="material-icons-round">chevron_right</span>
+            </div>
+            <div class="settings-item" onclick="toggleLargeFont(); event.preventDefault();">
+              <span class="material-icons-round">text_fields</span>
+              <div class="settings-item-info">
+                <span data-i18n="settings_largefont">Large Font</span>
+                <span class="settings-item-desc" data-i18n="settings_largefont_desc">Increase text size for easier reading</span>
+              </div>
+              <label class="toggle toggle-sm" onclick="event.stopPropagation();">
+                <input type="checkbox" id="settings-largefont-toggle" onchange="toggleLargeFont()">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <div class="settings-item" onclick="showThemeModal()">
+              <span class="material-icons-round">dark_mode</span>
+              <div class="settings-item-info">
+                <span data-i18n="settings_darkmode">Dark Mode</span>
+              </div>
+              <div class="settings-item-right">
+                <span class="settings-item-value" id="current-theme-label" data-i18n="theme_system">System</span>
+                <span class="material-icons-round">chevron_right</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Notification -->
+          <div class="settings-group">
+            <h4 data-i18n="settings_notification">通知设置</h4>
+            <div class="settings-item">
+              <span class="material-icons-round">notifications_active</span>
+              <div class="settings-item-info">
+                <span data-i18n="settings_remind_time">未签到提醒时间</span>
+                <span class="settings-item-value">10:00</span>
+              </div>
+              <span class="material-icons-round">chevron_right</span>
+            </div>
+            <div class="settings-item">
+              <span class="material-icons-round">sms</span>
+              <div class="settings-item-info">
+                <span data-i18n="settings_sms_mode">SMS通讯模式</span>
+                <span class="settings-item-desc" data-i18n="settings_sms_desc">无网络时自动通过SMS报平安</span>
+              </div>
+              <label class="toggle toggle-sm">
+                <input type="checkbox" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Emergency -->
+          <div class="settings-group">
+            <h4 data-i18n="settings_emergency">紧急设置</h4>
+            <div class="settings-item">
+              <span class="material-icons-round">contact_phone</span>
+              <div class="settings-item-info">
+                <span data-i18n="settings_emergency_contact">紧急联系人</span>
+                <span class="settings-item-value" data-i18n="contact_mom">妈妈</span>
+              </div>
+              <span class="material-icons-round">chevron_right</span>
+            </div>
+            <div class="settings-item">
+              <span class="material-icons-round">timer</span>
+              <div class="settings-item-info">
+                <span data-i18n="settings_alert_delay">未签到预警时间</span>
+                <span class="settings-item-desc" data-i18n="settings_alert_desc">超过此时间未签到将通知紧急联系人</span>
+              </div>
+              <span class="settings-item-value">48h</span>
+            </div>
+          </div>
+
+          <!-- About -->
+          <div class="settings-group">
+            <h4 data-i18n="settings_about">关于</h4>
+            <div class="settings-item">
+              <span class="material-icons-round">info</span>
+              <div class="settings-item-info">
+                <span data-i18n="settings_version">版本</span>
+                <span class="settings-item-value">1.0.0</span>
+              </div>
+            </div>
+            <div class="settings-item">
+              <span class="material-icons-round">favorite</span>
+              <div class="settings-item-info">
+                <span data-i18n="settings_about_app">关于安否</span>
+              </div>
+              <span class="material-icons-round">chevron_right</span>
+            </div>
+          </div>
+
+          <button class="btn btn-outline btn-danger settings-logout" onclick="navigateTo('page-login')" data-i18n="settings_logout">退出登录</button>
+        </div>
+      </div>
+
+      <!-- ========== Theme Modal ========== -->
+      <div class="modal-overlay hidden" id="theme-modal">
+        <div class="modal-content">
+          <h3 data-i18n="settings_darkmode">Dark Mode</h3>
+          <div class="language-list">
+            <button class="language-option active" id="theme-opt-system" onclick="setTheme('system')">
+              <span data-i18n="theme_system">System</span>
+              <span class="material-icons-round lang-check">check</span>
+            </button>
+            <button class="language-option" id="theme-opt-light" onclick="setTheme('light')">
+              <span data-i18n="theme_light">Light</span>
+              <span class="material-icons-round lang-check">check</span>
+            </button>
+            <button class="language-option" id="theme-opt-dark" onclick="setTheme('dark')">
+              <span data-i18n="theme_dark">Dark</span>
+              <span class="material-icons-round lang-check">check</span>
+            </button>
+          </div>
+          <button class="btn btn-outline modal-close" onclick="hideThemeModal()" data-i18n="modal_close">Close</button>
+        </div>
+      </div>
+
+      <!-- ========== Language Modal ========== -->
+      <div class="modal-overlay hidden" id="language-modal">
+        <div class="modal-content">
+          <h3 data-i18n="settings_language">语言</h3>
+          <div class="language-list">
+            <button class="language-option" onclick="setLanguage('zh')">
+              <span>中文</span>
+              <span class="material-icons-round lang-check">check</span>
+            </button>
+            <button class="language-option active" onclick="setLanguage('en')">
+              <span>English</span>
+              <span class="material-icons-round lang-check">check</span>
+            </button>
+            <button class="language-option disabled">
+              <span>日本語</span>
+              <span class="lang-badge">Coming soon</span>
+            </button>
+            <button class="language-option disabled">
+              <span>한국어</span>
+              <span class="lang-badge">Coming soon</span>
+            </button>
+            <button class="language-option disabled">
+              <span>Français</span>
+              <span class="lang-badge">Coming soon</span>
+            </button>
+            <button class="language-option disabled">
+              <span>Español</span>
+              <span class="lang-badge">Coming soon</span>
+            </button>
+          </div>
+          <button class="btn btn-outline modal-close" onclick="hideLanguageModal()" data-i18n="modal_close">关闭</button>
+        </div>
+      </div>
+
+      <!-- ========== Toast ========== -->
+      <div class="toast hidden" id="toast">
+        <span class="material-icons-round toast-icon">check_circle</span>
+        <span class="toast-text" id="toast-text"></span>
+      </div>
+
+    </div><!-- end phone-screen -->
+  </div><!-- end phone-frame -->
+
+  <script src="i18n.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
